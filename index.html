@@ -25,8 +25,8 @@
     }
     input {
       padding: 10px;
-      width: 60%;
-      margin-right: 10px;
+      width: 70%;
+      margin: 10px 0;
       border: 1px solid #ddd;
       border-radius: 4px;
     }
@@ -37,6 +37,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      margin: 5px;
     }
     button:hover {
       background-color: #0056b3;
@@ -55,47 +56,79 @@
 <body>
   <div class="container">
     <h1>LMP's App</h1>
-    <p>Un proyecto estudiantil para explorar y descargar música gratuita.</p>
-    <input type="text" id="searchInput" placeholder="Busca una canción...">
-    <button onclick="searchSongs()">Buscar</button>
+    <p>Un proyecto estudiantil para descargar playlists y canciones.</p>
+    <input type="text" id="playlistUrl" placeholder="Pega el enlace de la playlist o canción (ej. Spotify/Tidal)">
+    <br>
+    <button onclick="processLink()">Procesar Enlace</button>
+    <button onclick="downloadZip()">Descargar como ZIP</button>
     <div id="results"></div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script>
-    // Client ID proporcionado
     const JAMENDO_CLIENT_ID = 'b5ba3706';
+    let songList = [];
 
-    async function searchSongs() {
-      const query = document.getElementById('searchInput').value;
+    async function processLink() {
+      const url = document.getElementById('playlistUrl').value;
       const resultsDiv = document.getElementById('results');
-      resultsDiv.innerHTML = 'Buscando...';
+      resultsDiv.innerHTML = 'Procesando...';
 
-      try {
-        const response = await fetch(
-          `https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_CLIENT_ID}&format=json&limit=10&search=${encodeURIComponent(query)}&audioformat=mp3`
-        );
-        const data = await response.json();
+      // Simulación de procesamiento de enlaces Spotify/Tidal
+      if (url.includes('spotify.com') || url.includes('tidal.com')) {
+        resultsDiv.innerHTML = 'Simulando descarga desde Spotify/Tidal (ejemplo ético con Jamendo)...';
+        
+        // Ejemplo con Jamendo para mantenerlo legal
+        try {
+          const response = await fetch(
+            `https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_CLIENT_ID}&format=json&limit=5&search=rock`
+          );
+          const data = await response.json();
+          
+          if (!data.results || data.results.length === 0) {
+            resultsDiv.innerHTML = '<p>No se encontraron canciones.</p>';
+            return;
+          }
 
-        if (!data.results || data.results.length === 0) {
-          resultsDiv.innerHTML = '<p>No se encontraron resultados.</p>';
-          return;
+          songList = data.results;
+          resultsDiv.innerHTML = '';
+          songList.forEach((song, index) => {
+            const songDiv = document.createElement('div');
+            songDiv.className = 'song';
+            songDiv.innerHTML = `
+              <h3>${song.name}</h3>
+              <p>Artista: ${song.artist_name}</p>
+              <a href="${song.audio}" target="_blank">Descargar MP3 Individual</a>
+            `;
+            resultsDiv.appendChild(songDiv);
+          });
+        } catch (error) {
+          resultsDiv.innerHTML = '<p>Error al procesar el enlace. Revisa la consola.</p>';
+          console.error(error);
         }
-
-        resultsDiv.innerHTML = '';
-        data.results.forEach(song => {
-          const songDiv = document.createElement('div');
-          songDiv.className = 'song';
-          songDiv.innerHTML = `
-            <h3>${song.name}</h3>
-            <p>Artista: ${song.artist_name}</p>
-            <a href="${song.audio}" target="_blank">Descargar MP3</a>
-          `;
-          resultsDiv.appendChild(songDiv);
-        });
-      } catch (error) {
-        resultsDiv.innerHTML = '<p>Error al buscar canciones. Revisa la consola para más detalles.</p>';
-        console.error(error);
+      } else {
+        resultsDiv.innerHTML = '<p>Por favor, ingresa un enlace válido de Spotify o Tidal.</p>';
       }
+    }
+
+    function downloadZip() {
+      if (songList.length === 0) {
+        alert('Primero procesa un enlace para cargar canciones.');
+        return;
+      }
+
+      const zip = new JSZip();
+      const folder = zip.folder('LMPs_App_Playlist');
+
+      // Simulación: Agrega enlaces de canciones al ZIP (en un entorno real, se descargarían los archivos)
+      songList.forEach((song, index) => {
+        folder.file(`${song.name}.txt`, `Enlace de descarga: ${song.audio}\nArtista: ${song.artist_name}`);
+      });
+
+      zip.generateAsync({ type: 'blob' }).then(content => {
+        saveAs(content, 'LMPs_App_Playlist.zip');
+      });
     }
   </script>
 </body>
