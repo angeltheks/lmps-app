@@ -3,65 +3,161 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LMP's App - Proyecto Universitario</title>
+  <title>LMP's App - Streaming Moderno</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #2a2a4a);
       margin: 0;
       padding: 0;
+      color: #fff;
+      overflow-x: hidden;
     }
     .container {
-      max-width: 800px;
-      margin: 50px auto;
-      text-align: center;
-      background: white;
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    h1 {
-      color: #333;
+    .navbar {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 10px;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
-    input {
-      padding: 10px;
-      width: 70%;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin: 5px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .song {
-      margin: 20px 0;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-    .song a {
-      color: #007bff;
+    .navbar a {
+      color: #fff;
       text-decoration: none;
+      margin: 0 20px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .navbar a:hover {
+      color: #00d4ff;
+      transform: translateY(-2px);
+    }
+    .hero {
+      text-align: center;
+      padding: 50px 0;
+    }
+    .hero h1 {
+      font-size: 3em;
+      margin: 0;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    .input-section {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      transition: all 0.3s ease;
+    }
+    .input-section:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.02);
+    }
+    .input-section input {
+      width: 70%;
+      padding: 12px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+    .input-section button {
+      padding: 12px 25px;
+      background: #00d4ff;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .input-section button:hover {
+      background: #00aaff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 164, 255, 0.4);
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .song-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+    .song-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .song-card h3 {
+      margin: 0;
+      font-size: 1.2em;
+    }
+    .song-card p {
+      margin: 5px 0;
+      color: #ccc;
+    }
+    .song-card a, .download-zip {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #00d4ff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+    .song-card a:hover, .download-zip:hover {
+      background: #00aaff;
+      transform: translateY(-2px);
+    }
+    .download-zip {
+      display: block;
+      margin: 20px auto;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+  <div class="navbar">
+    <div>
+      <a href="#">Inicio</a>
+      <a href="#">Playlists</a>
+      <a href="#">Canciones</a>
+      <a href="#">Descargas</a>
+    </div>
+    <div>
+      <a href="#">LMP's App</a>
+    </div>
+  </div>
   <div class="container">
-    <h1>LMP's App</h1>
-    <p>Un proyecto estudiantil para descargar playlists y canciones.</p>
-    <input type="text" id="playlistUrl" placeholder="Pega el enlace de la playlist o canción (ej. Spotify/Tidal)">
-    <br>
-    <button onclick="processLink()">Procesar Enlace</button>
-    <button onclick="downloadZip()">Descargar como ZIP</button>
-    <div id="results"></div>
+    <div class="hero">
+      <h1>LMP's App</h1>
+      <p>Tu plataforma de streaming ultramoderna</p>
+    </div>
+    <div class="input-section">
+      <input type="text" id="playlistUrl" placeholder="Pega el enlace de la playlist o canción (Spotify/Tidal)">
+      <button onclick="processLink()">Procesar</button>
+    </div>
+    <div id="results" class="results"></div>
+    <button class="download-zip" onclick="downloadZip()" style="display: none;">Descargar como ZIP</button>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -73,19 +169,17 @@
     async function processLink() {
       const url = document.getElementById('playlistUrl').value;
       const resultsDiv = document.getElementById('results');
+      const downloadZipBtn = document.querySelector('.download-zip');
       resultsDiv.innerHTML = 'Procesando...';
 
-      // Simulación de procesamiento de enlaces Spotify/Tidal
       if (url.includes('spotify.com') || url.includes('tidal.com')) {
-        resultsDiv.innerHTML = 'Simulando descarga desde Spotify/Tidal (ejemplo ético con Jamendo)...';
-        
-        // Ejemplo con Jamendo para mantenerlo legal
+        resultsDiv.innerHTML = 'Simulando playlist desde Spotify/Tidal con Jamendo...';
         try {
           const response = await fetch(
-            `https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_CLIENT_ID}&format=json&limit=5&search=rock`
+            `https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_CLIENT_ID}&format=json&limit=10&search=electronic`
           );
           const data = await response.json();
-          
+
           if (!data.results || data.results.length === 0) {
             resultsDiv.innerHTML = '<p>No se encontraron canciones.</p>';
             return;
@@ -93,37 +187,37 @@
 
           songList = data.results;
           resultsDiv.innerHTML = '';
-          songList.forEach((song, index) => {
+          songList.forEach(song => {
             const songDiv = document.createElement('div');
-            songDiv.className = 'song';
+            songDiv.className = 'song-card';
             songDiv.innerHTML = `
               <h3>${song.name}</h3>
               <p>Artista: ${song.artist_name}</p>
-              <a href="${song.audio}" target="_blank">Descargar MP3 Individual</a>
+              <a href="${song.audio}" target="_blank">Descargar MP3</a>
             `;
             resultsDiv.appendChild(songDiv);
           });
+          downloadZipBtn.style.display = 'block';
         } catch (error) {
-          resultsDiv.innerHTML = '<p>Error al procesar el enlace. Revisa la consola.</p>';
+          resultsDiv.innerHTML = '<p>Error al procesar el enlace.</p>';
           console.error(error);
         }
       } else {
-        resultsDiv.innerHTML = '<p>Por favor, ingresa un enlace válido de Spotify o Tidal.</p>';
+        resultsDiv.innerHTML = '<p>Ingresa un enlace válido de Spotify o Tidal.</p>';
       }
     }
 
     function downloadZip() {
       if (songList.length === 0) {
-        alert('Primero procesa un enlace para cargar canciones.');
+        alert('Procesa un enlace primero.');
         return;
       }
 
       const zip = new JSZip();
       const folder = zip.folder('LMPs_App_Playlist');
 
-      // Simulación: Agrega enlaces de canciones al ZIP (en un entorno real, se descargarían los archivos)
       songList.forEach((song, index) => {
-        folder.file(`${song.name}.txt`, `Enlace de descarga: ${song.audio}\nArtista: ${song.artist_name}`);
+        folder.file(`${song.name}.txt`, `Enlace: ${song.audio}\nArtista: ${song.artist_name}`);
       });
 
       zip.generateAsync({ type: 'blob' }).then(content => {
